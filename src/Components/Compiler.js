@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Component } from "react";
 
 import "./Compiler.css";
@@ -7,7 +8,7 @@ export default class Compiler extends Component {
     this.state = {
       input: localStorage.getItem("input") || ``,
       output: ``,
-      language_id: localStorage.getItem("language_Id") || 2,
+      language_id: localStorage.getItem("language_Id") || 52,
       user_input: ``,
     };
   }
@@ -34,26 +35,25 @@ export default class Compiler extends Component {
     let outputText = document.getElementById("output");
     outputText.innerHTML = "";
     outputText.innerHTML += "Creating Submission ...\n";
-    const response = await fetch(
-      "https://judge0-extra.p.rapidapi.com/submissions",
-      {
-        method: "POST",
-        headers: {
-          "x-rapidapi-host": "judge0-extra.p.rapidapi.com",
-          "x-rapidapi-key":
-            "b981cd2001msh5e29487ed2b4ebep118549jsn7a68667230b1", // Get yours for free at https://rapidapi.com/hermanzdosilovic/api/judge0
-          "content-type": "application/json",
-          accept: "application/json",
-        },
-        body: JSON.stringify({
-          source_code: this.state.input,
-          stdin: this.state.user_input,
-          language_id: this.state.language_id,
-        }),
-      }
-    );
+    console.log(JSON.stringify(this.state.input));
+    const response = await axios.request({
+      method: "POST",
+      url: "https://judge0-ce.p.rapidapi.com/submissions",
+      params: { base64_encoded: "true", fields: "*" },
+      headers: {
+        "content-type": "application/json",
+        "x-rapidapi-key": "b981cd2001msh5e29487ed2b4ebep118549jsn7a68667230b1",
+        "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
+      },
+      data: {
+        source_code:
+          "I2luY2x1ZGUgPHN0ZGlvLmg+CgppbnQgbWFpbih2b2lkKSB7CiAgY2hhciBuYW1lWzEwXTsKICBzY2FuZigiJXMiLCBuYW1lKTsKICBwcmludGYoImhlbGxvLCAlc1xuIiwgbmFtZSk7CiAgcmV0dXJuIDA7Cn0=", // Error in state
+        stdin: "SnVkZ2Uw", // - Error in state
+        language_id: this.state.language_id,
+      },
+    });
     outputText.innerHTML += "Submission Created ...\n";
-    const jsonResponse = await response.json();
+    console.log(response.data.token);
 
     let jsonGetSolution = {
       status: { description: "Queue" },
@@ -67,20 +67,18 @@ export default class Compiler extends Component {
       jsonGetSolution.compile_output == null
     ) {
       outputText.innerHTML = `Creating Submission ... \nSubmission Created ...\nChecking Submission Status\nstatus : ${jsonGetSolution.status.description}`;
-      if (jsonResponse.token) {
-        let url = `https://judge0-extra.p.rapidapi.com/submissions/${jsonResponse.token}?base64_encoded=true`;
-
-        const getSolution = await fetch(url, {
+      if (response.data.token) {
+        const getSolution = await axios.request({
           method: "GET",
+          url: `https://judge0-ce.p.rapidapi.com/submissions/${response.data.token}`,
+          params: { base64_encoded: "true", fields: "*" },
           headers: {
-            "x-rapidapi-host": "judge0-extra.p.rapidapi.com",
             "x-rapidapi-key":
-              "b981cd2001msh5e29487ed2b4ebep118549jsn7a68667230b1", // Get yours for free at https://rapidapi.com/hermanzdosilovic/api/judge0
-            "content-type": "application/json",
+              "b981cd2001msh5e29487ed2b4ebep118549jsn7a68667230b1",
+            "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
           },
         });
-
-        jsonGetSolution = await getSolution.json();
+        jsonGetSolution = getSolution.data;
       }
     }
     if (jsonGetSolution.stdout) {
