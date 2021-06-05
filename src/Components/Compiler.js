@@ -104,61 +104,70 @@ export default class Compiler extends Component {
   render() {
     return (
       <>
-        <div className="row container-fluid">
-          <div className="col-6 ml-4 ">
-            <label for="solution ">
-              <span className="badge badge-info heading mt-2 ">
-                <i className="fas fa-code fa-fw fa-lg"></i> Code Here
-              </span>
-            </label>
-            <textarea
-              required
-              name="solution"
-              id="source"
-              onChange={this.input}
-              className=" source"
-              value={this.state.input}
-            ></textarea>
-
-            <button
-              type="submit"
-              className="btn btn-danger ml-2 mr-2 "
-              onClick={this.submit}
-            >
-              <i class="fas fa-cog fa-fw"></i> Run
-            </button>
-
-            <label for="tags" className="mr-1">
-              <b className="heading">Language:</b>
-            </label>
+        <div className="header">
+          <nav className="navigation">
+            <h1 className="heading">AccioJob</h1>
             <select
               value={this.state.language_id}
               onChange={this.language}
               id="tags"
-              className="form-control form-inline mb-2 language"
+              className="form-control form-inline language options"
             >
               <option value="2">C++</option>
               <option value="1">C</option>
               <option value="4">Java</option>
               <option value="10">Python</option>
+              <label for="tags" className="mr-1">
+                <b className="heading">Language:</b>
+              </label>
             </select>
-          </div>
-          <div className="col-5">
-            <div>
-              <span className="badge badge-info heading my-2 ">
-                <i className="fas fa-exclamation fa-fw fa-md"></i> Output
-              </span>
-              <textarea id="output"></textarea>
-            </div>
-          </div>
+            <button type="submit" className="runbtn" onClick={this.submit}>
+              <i class="fas fa-cog fa-fw"></i> Run
+            </button>
+          </nav>
         </div>
 
-        <div className="mt-2 ml-5">
-          <span className="badge badge-primary heading my-2 ">
-            <i className="fas fa-user fa-fw fa-md"></i> User Input
-          </span>
-          <br />
-          <textarea id="input" onChange={this.userInput}></textarea>
+        <div className="grid-container">
+          <div className="grid-item-code">
+            <legend className="subhead "> Code Here</legend>
+            <textarea
+              required
+              name="solution"
+              id="source"
+              onChange={this.input}
+              className=" source textbox"
+              value={this.state.input}
+              placeholder="Type Your Code Here"
+              rows="34"
+              cols="80"
+            ></textarea>
+          </div>
+          <div className="grid-item-output">
+            <div>
+              {/* <span className="subhead ">Output
+              </span> */}
+              <legend className="subhead "> Output</legend>
+              <textarea
+                id="output"
+                className="textbox"
+                placeholder="Output Will be Visible Here"
+                rows="14"
+                cols="80"
+              ></textarea>
+            </div>
+          </div>
+          <div className="grid-item-input">
+            <legend className="subhead ">User Input</legend>
+            <br />
+            <textarea
+              id="input"
+              className="textbox"
+              placeholder="Enter User's input"
+              onChange={this.userInput}
+              rows="14"
+              cols="80"
+            ></textarea>
+          </div>
         </div>
       </>
     );

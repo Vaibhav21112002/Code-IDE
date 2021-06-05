@@ -1,6 +1,5 @@
 import "./App.css";
 import Compiler from "./Components/Compiler";
-import OnlineIde from "./Components/OnlineIde";
 
 function App() {
   return (
