@@ -1,9 +1,9 @@
 import axios from "axios";
-import React, { Component} from "react";
+import React, { Component } from "react";
 import Editor from "@monaco-editor/react";
 import "./Compiler.css";
 import Header from "./Header/header";
-import Modal from "./UserInput/modal";
+import Modal from "react-modal";
 export default class Compiler extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +13,8 @@ export default class Compiler extends Component {
       language_id: localStorage.getItem("language_Id") || 54,
       user_input: "",
       theme: "vs-light",
+      modalIsOpen: false,
+      secondModalIsOpen: false,
     };
   }
 
@@ -24,9 +26,15 @@ export default class Compiler extends Component {
   };
 
   openModal = () => {
-    this.setState({
-      showModal: true,
-    });
+    this.setState({ modalIsOpen: true });
+  };
+
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
+  };
+
+  closeSecondModal = () => {
+    this.setState({ secondModalIsOpen: false });
   };
   input = (value) => {
     this.setState({ input: value });
@@ -121,7 +129,10 @@ export default class Compiler extends Component {
       });
     }
   };
-
+  openSecondModal = () => {
+    this.submit();
+    this.setState({ secondModalIsOpen: true });
+  };
   changeTheme = () => {
     this.setState({
       theme: "vs-dark",
@@ -192,7 +203,7 @@ export default class Compiler extends Component {
                 <Editor
                   height="75vh"
                   defaultLanguage={this.props[this.state.language_id]}
-                  defaultValue={`#include <iostream> \nusing namespace std \n\nint main(){\n\t//Code Here\n\treturn0;\n} `}
+                  defaultValue={`#include <iostream> \nusing namespace std; \n\nint main(){\n\t//Code Here\n\treturn 0;\n} `}
                   theme={this.theme}
                   onChange={this.input}
                 />
@@ -202,21 +213,53 @@ export default class Compiler extends Component {
                 <footer className="text-gray-600 bg-white body-font rounded-b-lg">
                   <div className="container py-3 px-3 mx-auto flex items-center sm:flex-row flex-col">
                     <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
-                      
                       <button
                         type="submit"
-                        // onClick={}
+                        onClick={this.openModal}
                         className="inline-flex text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded-full mr-2"
                       >
                         User Input
                       </button>
+                      <Modal
+                        isOpen={this.state.modalIsOpen}
+                        onRequestClose={this.closeModal}
+                      >
+                        <button onClick={this.closeModal}>close</button>
+                        <div>
+                          <textarea
+                            id="input"
+                            className="textbox"
+                            placeholder="Enter User's input"
+                            onChange={this.userInput}
+                            rows="14"
+                            cols="80"
+                          ></textarea>
+                        </div>
+                      </Modal>
                       <button
                         type="submit"
-                        onClick={this.submit}
+                        onClick={this.openSecondModal}
                         className="inline-flex text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded-full"
                       >
                         Submit
                       </button>
+                      <Modal
+                        isOpen={this.state.secondModalIsOpen}
+                        onRequestClose={this.closeSecondModal}
+                      >
+                        <button onClick={this.closeSecondModal}>close</button>
+                        <div>
+                          <textarea
+                            id="output"
+                            className="textbox"
+                            placeholder="Output Will be Visible Here"
+                            rows="14"
+                            cols="80"
+                            value={this.state.output}
+                            readOnly
+                          />
+                        </div>
+                      </Modal>
                     </span>
                   </div>
                 </footer>
@@ -226,34 +269,6 @@ export default class Compiler extends Component {
           </div>
         </section>
         {/* Main Page Code Ends */}
-        <div className="grid-container">
-          <div className="grid-item-output">
-            <div>
-              <legend className="subhead ">Output</legend>
-              <textarea
-                id="output"
-                className="textbox"
-                placeholder="Output Will be Visible Here"
-                rows="14"
-                cols="80"
-                value={this.state.output}
-                readOnly
-              />
-            </div>
-          </div>
-          <div className="grid-item-input">
-            <legend className="subhead">User Input</legend>
-            <br />
-            <textarea
-              id="input"
-              className="textbox"
-              placeholder="Enter User's input"
-              onChange={this.userInput}
-              rows="14"
-              cols="80"
-            ></textarea>
-          </div>
-        </div>
       </>
     );
   }
