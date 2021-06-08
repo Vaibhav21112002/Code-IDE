@@ -91,16 +91,13 @@ export default class Compiler extends Component {
 
       outputText.innerHTML += `Results :\n${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`;
     } else if (jsonGetSolution.stderr) {
-      const error = atob(jsonGetSolution.stderr);
-
+      let escaped = escape(atob(jsonGetSolution.stderr || ""));
       outputText.innerHTML = "";
-
-      outputText.innerHTML += `\n Error :${error}`;
+      outputText.innerHTML += `\n Error :${decodeURIComponent(escaped)}`;
     } else {
-      const compilation_error = atob(jsonGetSolution.compile_output);
+      let escaped = escape(atob(jsonGetSolution.compile_output || ""));
       outputText.innerHTML = "";
-
-      outputText.innerHTML += `\n Error :${compilation_error}`;
+      outputText.innerHTML += `\n Error :${decodeURIComponent(escaped)}`;
     }
 
     localStorage.clear();
@@ -144,6 +141,7 @@ export default class Compiler extends Component {
               placeholder="Type Your Code Here"
               rows="34"
               cols="80"
+              spellCheck={false}
             ></textarea>
           </div>
           <div className="grid-item-output">
