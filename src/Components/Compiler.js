@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
-
+import Editor from "@monaco-editor/react";
 import "./Compiler.css";
 export default class Compiler extends Component {
   constructor(props) {
@@ -28,9 +28,22 @@ export default class Compiler extends Component {
     this.setState({ language_id: event.target.value });
     localStorage.setItem("language_Id", event.target.value);
   };
-
   encode = (input) => {
     return btoa(unescape(encodeURIComponent(input || "")));
+  };
+  getLanguage = (languageId) => {
+    switch (parseInt(languageId)) {
+      case 54:
+        return "c++";
+      case 62:
+        return "java";
+      case 71:
+        return "python";
+      case 63:
+        return "javascript";
+      default:
+        return "c++";
+    }
   };
 
   submit = async (e) => {
@@ -131,7 +144,7 @@ export default class Compiler extends Component {
         <div className="grid-container">
           <div className="grid-item-code">
             <legend className="subhead "> Code Here</legend>
-            <textarea
+            {/* <textarea
               required
               name="solution"
               id="source"
@@ -142,7 +155,13 @@ export default class Compiler extends Component {
               rows="34"
               cols="80"
               spellCheck={false}
-            ></textarea>
+            ></textarea> */}
+            <Editor
+              height="50vh"
+              defaultLanguage="c++"
+              defaultValue="// some comment"
+              theme="vs-dark"
+            />
           </div>
           <div className="grid-item-output">
             <div>
