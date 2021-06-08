@@ -8,7 +8,7 @@ export default class Compiler extends Component {
     this.state = {
       input: localStorage.getItem("input") || ``,
       output: ``,
-      language_id: localStorage.getItem("language_Id") || 52,
+      language_id: localStorage.getItem("language_Id") || 54,
       user_input: ``,
     };
   }
@@ -52,7 +52,7 @@ export default class Compiler extends Component {
       data: {
         source_code: this.encode(this.state.input), // Error in state
         stdin: this.encode(this.state.user_input), // - Error in state
-        language_id: this.state.language_id,
+        language_id: parseInt(this.state.language_id),
       },
     });
     outputText.innerHTML += "Submission Created ...\n";
@@ -114,7 +114,7 @@ export default class Compiler extends Component {
               id="tags"
               className="form-control form-inline language options"
             >
-              <option value="52">C++</option>
+              <option value="54">C++</option>
               <option value="62">Java</option>
               <option value="71">Python</option>
               <option value="63">Javascript</option>
