@@ -47,7 +47,7 @@ export default class Compiler extends Component {
       params: { base64_encoded: "true", fields: "*" },
       headers: {
         "content-type": "application/json",
-        "x-rapidapi-key": "",
+        "x-rapidapi-key": "b981cd2001msh5e29487ed2b4ebep118549jsn7a68667230b1",
         "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
       },
       data: {
@@ -83,7 +83,8 @@ export default class Compiler extends Component {
           url: `https://judge0-ce.p.rapidapi.com/submissions/${response.data.token}`,
           params: { base64_encoded: "true", fields: "*" },
           headers: {
-            "x-rapidapi-key": "",
+            "x-rapidapi-key":
+              "b981cd2001msh5e29487ed2b4ebep118549jsn7a68667230b1",
             "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
           },
         });
