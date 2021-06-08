@@ -1,25 +1,25 @@
-.header{
+.header {
   background-color: black;
   margin: 0px;
   /* margin-top: -20px; */
   display: flex;
   padding: 10px;
 }
-.headerImage{
+.headerImage {
   width: 225px;
 }
-.navigation{
+.navigation {
   display: flex;
   flex-direction: row;
 }
 
-.heading{
-  color:white;
+.heading {
+  color: white;
   flex-direction: row;
   margin-right: 10px;
 }
 
-.runbtn{
+.runbtn {
   background-color: rgb(207, 19, 19);
   color: white;
   width: 100px;
@@ -30,7 +30,7 @@
   cursor: pointer;
 }
 
-.options{
+.options {
   width: 150px;
   height: 50px;
   font-size: 15px;
@@ -40,7 +40,7 @@
   margin-right: 10px;
 }
 
-.grid-container{
+.grid-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
@@ -48,12 +48,12 @@
   background-color: rgb(80, 75, 75);
 }
 
-.grid-item-code{
+.grid-item-code {
   grid-row-start: 1;
   grid-row-end: 3;
 }
 
-.grid-item-input{
+.grid-item-input {
   grid-row-start: 1;
   grid-row-end: 2;
   grid-column-start: 2;
@@ -61,7 +61,7 @@
   margin-top: -1px;
 }
 
-.grid-item-output{
+.grid-item-output {
   grid-row-start: 2;
   grid-row-end: 3;
   grid-column-start: 2;
@@ -69,15 +69,23 @@
   margin-left: 2%;
 }
 
-.textbox{
+.textbox {
   border-radius: 10px;
   resize: none;
+  border: 0px solid black;
 }
 
-.subhead{
+.subhead {
   background-color: red;
   color: white;
-  margin:10px;
+  margin: 10px;
   padding: 2px;
-  border-radius:999px;
+  border-radius: 999px;
 }
+/* 
+.modal {
+  width: 50%;
+  height: 50%;
+  margin: auto;
+  background-color: grey;
+} */

@@ -12,7 +12,7 @@ export default class Compiler extends Component {
       output: "",
       language_id: localStorage.getItem("language_Id") || 54,
       user_input: "",
-      theme: "vs-light",
+      theme: "vs-dark",
       modalIsOpen: false,
       secondModalIsOpen: false,
     };
@@ -24,7 +24,6 @@ export default class Compiler extends Component {
     71: "python",
     63: "javascript",
   };
-
   openModal = () => {
     this.setState({ modalIsOpen: true });
   };
@@ -111,7 +110,7 @@ export default class Compiler extends Component {
     if (jsonGetSolution.stdout) {
       const output = decodeURIComponent(escape(atob(jsonGetSolution.stdout)));
       this.setState({
-        output: `Results :\n${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
+        output: `Result :\n${output}\nExecution Time : ${jsonGetSolution.time} Secs\nMemory used : ${jsonGetSolution.memory} bytes`,
       });
     } else if (jsonGetSolution.stderr) {
       const res = decodeURIComponent(
@@ -132,10 +131,11 @@ export default class Compiler extends Component {
   openSecondModal = () => {
     this.submit();
     this.setState({ secondModalIsOpen: true });
+    localStorage.clear();
   };
   changeTheme = () => {
     this.setState({
-      theme: "vs-dark",
+      theme: this.state.theme == "vs-light" ? "vs-dark" : "vs-light",
     });
   };
   render() {
@@ -166,12 +166,11 @@ export default class Compiler extends Component {
                 </div>
                 <div className="flex flex-col items-center text-center justify-center">
                   <h2 className="font-medium title-font mt-4 text-gray-900 text-lg">
-                    Phoebe Caulfield
+                    Question
                   </h2>
                   <div className="w-12 h-1 bg-red-500 rounded mt-2 mb-4" />
                   <p className="text-base">
-                    Raclette knausgaard hella meggs normcore williamsburg enamel
-                    pin sartorial venmo tbh hot chicken gentrify portland.
+                    Problem Statement / Quesiont Description will be shown here
                   </p>
                 </div>
               </div>
@@ -203,8 +202,8 @@ export default class Compiler extends Component {
                 <Editor
                   height="75vh"
                   defaultLanguage={this.props[this.state.language_id]}
-                  defaultValue={`#include <iostream> \nusing namespace std; \n\nint main(){\n\t//Code Here\n\treturn 0;\n} `}
-                  theme={this.theme}
+                  // defaultValue={`#include <iostream> \nusing namespace std; \n\nint main(){\n\t//Code Here\n\treturn 0;\n} `}
+                  theme={this.state.theme}
                   onChange={this.input}
                 />
                 {/* Editor Code Ends */}
@@ -223,8 +222,9 @@ export default class Compiler extends Component {
                       <Modal
                         isOpen={this.state.modalIsOpen}
                         onRequestClose={this.closeModal}
+                        style={{height: 300, width: 300}}
                       >
-                        <button onClick={this.closeModal}>close</button>
+                        <button onClick={this.closeModal} className="inline-flex text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded-full">OK</button>
                         <div>
                           <textarea
                             id="input"
@@ -247,7 +247,7 @@ export default class Compiler extends Component {
                         isOpen={this.state.secondModalIsOpen}
                         onRequestClose={this.closeSecondModal}
                       >
-                        <button onClick={this.closeSecondModal}>close</button>
+                        <button className="inline-flex text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded-full" onClick={this.closeSecondModal}>close</button>
                         <div>
                           <textarea
                             id="output"
