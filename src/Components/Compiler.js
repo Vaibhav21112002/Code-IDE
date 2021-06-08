@@ -1,7 +1,9 @@
 import axios from "axios";
-import React, { Component } from "react";
+import React, { Component} from "react";
 import Editor from "@monaco-editor/react";
 import "./Compiler.css";
+import Header from "./Header/header";
+import Modal from "./UserInput/modal";
 export default class Compiler extends Component {
   constructor(props) {
     super(props);
@@ -10,6 +12,7 @@ export default class Compiler extends Component {
       output: "",
       language_id: localStorage.getItem("language_Id") || 54,
       user_input: "",
+      theme: "vs-light",
     };
   }
 
@@ -20,6 +23,11 @@ export default class Compiler extends Component {
     63: "javascript",
   };
 
+  openModal = () => {
+    this.setState({
+      showModal: true,
+    });
+  };
   input = (value) => {
     this.setState({ input: value });
     localStorage.setItem("input", value);
@@ -34,6 +42,7 @@ export default class Compiler extends Component {
   encode = (input) => {
     return btoa(unescape(encodeURIComponent(input || "")));
   };
+
   submit = async () => {
     this.setState({
       output: "",
@@ -113,40 +122,111 @@ export default class Compiler extends Component {
     }
   };
 
+  changeTheme = () => {
+    this.setState({
+      theme: "vs-dark",
+    });
+  };
   render() {
     return (
       <>
-        <div className="header">
-          <nav className="navigation">
-            <h1 className="heading">AccioJob</h1>
-            <select
-              value={this.state.language_id}
-              onChange={this.language}
-              id="tags"
-              className="form-control form-inline language options"
-            >
-              <option value="54">C++</option>
-              <option value="62">Java</option>
-              <option value="71">Python</option>
-              <option value="63">Javascript</option>
-            </select>
-            <button type="submit" className="runbtn" onClick={this.submit}>
-              <i className="fas fa-cog fa-fw"></i> Run
-            </button>
-          </nav>
-        </div>
+        {/* Header Starts */}
+        <Header />
+        {/* Header Ends */}
 
-        <div className="grid-container">
-          <div className="grid-item-code">
-            <legend className="subhead "> Code Here</legend>
-            <Editor
-              height="75vh"
-              defaultLanguage={this.props[this.state.language_id]}
-              defaultValue={`\n \n \n \n \n`}
-              theme="vs-dark"
-              onChange={this.input}
-            />
+        {/* Main Page Code Starts*/}
+        <section className="text-gray-600 body-font">
+          <div className="container mx-auto flex flex-col">
+            <div className="flex flex-col sm:flex-row mt-10">
+              <div className="sm:w-1/3 text-center sm:pr-8 sm:py-8">
+                <div className="w-20 h-20 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400">
+                  <svg
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    className="w-10 h-10"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                    <circle cx={12} cy={7} r={4} />
+                  </svg>
+                </div>
+                <div className="flex flex-col items-center text-center justify-center">
+                  <h2 className="font-medium title-font mt-4 text-gray-900 text-lg">
+                    Phoebe Caulfield
+                  </h2>
+                  <div className="w-12 h-1 bg-red-500 rounded mt-2 mb-4" />
+                  <p className="text-base">
+                    Raclette knausgaard hella meggs normcore williamsburg enamel
+                    pin sartorial venmo tbh hot chicken gentrify portland.
+                  </p>
+                </div>
+              </div>
+              <div className="sm:w-2/3 sm:pl-8 sm:py-8 sm:border-l border-gray-200 sm:border-t-0 border-t mt-4 pt-4 sm:mt-0 text-center sm:text-left">
+                {/* Language Selection Starts */}
+                <header class="text-gray-600 bg-white body-font rounded-t-lg">
+                  <div class="container mx-auto flex flex-wrap p-2 flex-col md:flex-row items-center">
+                    <select
+                      value={this.state.language_id}
+                      onChange={this.language}
+                      id="tags"
+                      className="form-control form-inline language options"
+                    >
+                      <option value="54">C++</option>
+                      <option value="62">Java</option>
+                      <option value="71">Python</option>
+                      <option value="63">Javascript</option>
+                    </select>
+                    <button
+                      onClick={this.changeTheme}
+                      class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0"
+                    >
+                      Change Theme
+                    </button>
+                  </div>
+                </header>
+                {/* Language Selection Ends */}
+                {/* Editon Code Starts */}
+                <Editor
+                  height="75vh"
+                  defaultLanguage={this.props[this.state.language_id]}
+                  defaultValue={`#include <iostream> \nusing namespace std \n\nint main(){\n\t//Code Here\n\treturn0;\n} `}
+                  theme={this.theme}
+                  onChange={this.input}
+                />
+                {/* Editor Code Ends */}
+
+                {/* Submit Button Start */}
+                <footer className="text-gray-600 bg-white body-font rounded-b-lg">
+                  <div className="container py-3 px-3 mx-auto flex items-center sm:flex-row flex-col">
+                    <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+                      
+                      <button
+                        type="submit"
+                        // onClick={}
+                        className="inline-flex text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded-full mr-2"
+                      >
+                        User Input
+                      </button>
+                      <button
+                        type="submit"
+                        onClick={this.submit}
+                        className="inline-flex text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded-full"
+                      >
+                        Submit
+                      </button>
+                    </span>
+                  </div>
+                </footer>
+                {/* Submit Button Ends */}
+              </div>
+            </div>
           </div>
+        </section>
+        {/* Main Page Code Ends */}
+        <div className="grid-container">
           <div className="grid-item-output">
             <div>
               <legend className="subhead ">Output</legend>
