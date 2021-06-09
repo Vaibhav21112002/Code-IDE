@@ -135,7 +135,7 @@ export default class Compiler extends Component {
   };
   changeTheme = () => {
     this.setState({
-      theme: this.state.theme == "vs-light" ? "vs-dark" : "vs-light",
+      theme: this.state.theme === "vs-light" ? "vs-dark" : "vs-light",
     });
   };
   render() {
@@ -202,7 +202,7 @@ export default class Compiler extends Component {
                 <Editor
                   height="75vh"
                   defaultLanguage={this.props[this.state.language_id]}
-                  // defaultValue={`#include <iostream> \nusing namespace std; \n\nint main(){\n\t//Code Here\n\treturn 0;\n} `}
+                  defaultValue={`#include <iostream> \nusing namespace std; \n\nint main(){\n\t//Code Here\n\treturn 0;\n} `}
                   theme={this.state.theme}
                   onChange={this.input}
                 />
