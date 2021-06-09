@@ -1,9 +1,23 @@
 import axios from "axios";
 import React, { Component } from "react";
+// import { useMediaQuery } from "react-responsive";
 import Editor from "@monaco-editor/react";
 import "./Compiler.css";
 import Header from "./Header/header";
 import Modal from "react-modal";
+
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
+
 export default class Compiler extends Component {
   constructor(props) {
     super(props);
@@ -15,9 +29,9 @@ export default class Compiler extends Component {
       theme: "vs-dark",
       modalIsOpen: false,
       secondModalIsOpen: false,
+      windowWidth: window.innerWidth,
     };
   }
-
   static defaultProps = {
     54: "cpp",
     62: "java",
@@ -138,7 +152,9 @@ export default class Compiler extends Component {
       theme: this.state.theme === "vs-light" ? "vs-dark" : "vs-light",
     });
   };
+  
   render() {
+    
     return (
       <>
         {/* Header Starts */}
@@ -222,9 +238,14 @@ export default class Compiler extends Component {
                       <Modal
                         isOpen={this.state.modalIsOpen}
                         onRequestClose={this.closeModal}
-                        style={{height: 300, width: 300}}
+                        style={customStyles}
                       >
-                        <button onClick={this.closeModal} className="inline-flex text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded-full">OK</button>
+                        <button
+                          onClick={this.closeModal}
+                          className="inline-flex text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded-full"
+                        >
+                          OK
+                        </button>
                         <div>
                           <textarea
                             id="input"
@@ -246,8 +267,14 @@ export default class Compiler extends Component {
                       <Modal
                         isOpen={this.state.secondModalIsOpen}
                         onRequestClose={this.closeSecondModal}
+                        style={customStyles}
                       >
-                        <button className="inline-flex text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded-full" onClick={this.closeSecondModal}>close</button>
+                        <button
+                          className="inline-flex text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded-full"
+                          onClick={this.closeSecondModal}
+                        >
+                          close
+                        </button>
                         <div>
                           <textarea
                             id="output"
