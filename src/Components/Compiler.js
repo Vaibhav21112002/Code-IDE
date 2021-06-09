@@ -5,7 +5,7 @@ import Editor from "@monaco-editor/react";
 import "./Compiler.css";
 import Header from "./Header/header";
 import Modal from "react-modal";
-
+import { Link } from "react-router-dom";
 
 const customStyles = {
   content: {
@@ -24,7 +24,7 @@ export default class Compiler extends Component {
     this.state = {
       input: localStorage.getItem("input") || "",
       output: "",
-      language_id: localStorage.getItem("language_Id") || 54,
+      language_id: localStorage.getItem("language_Id") || 62,
       user_input: "",
       theme: "vs-dark",
       modalIsOpen: false,
@@ -56,9 +56,14 @@ export default class Compiler extends Component {
   userInput = (evt) => {
     this.setState({ user_input: evt.target.value });
   };
+
+  resete = () => {
+    <Link to="/"></Link>
+  }
   language = (evt) => {
-    this.setState({ language_id: evt.target.value }, () => {});
+    this.setState({ language_id: evt.target.value }, () => { });
     localStorage.setItem("language_Id", evt.target.value);
+
   };
   encode = (input) => {
     return btoa(unescape(encodeURIComponent(input || "")));
@@ -200,8 +205,8 @@ export default class Compiler extends Component {
                       id="tags"
                       className="form-control form-inline language options"
                     >
-                      <option value="54">C++</option>
                       <option value="62">Java</option>
+                      <option value="54">C++</option>
                       <option value="71">Python</option>
                       <option value="63">Javascript</option>
                     </select>
@@ -218,7 +223,7 @@ export default class Compiler extends Component {
                 <Editor
                   height="75vh"
                   defaultLanguage={this.props[this.state.language_id]}
-                  defaultValue={`#include <iostream> \nusing namespace std; \n\nint main(){\n\t//Code Here\n\treturn 0;\n} `}
+                  defaultValue={`import java.util.*;\nimport java.lang.*;\nimport java.io.*;\n\npublic class Main\n{\n\tpublic static void main (String[] args) throws java.lang.Exception\n\t{\n\t\tSystem.out.println("Hello World");\n\t}\n}`}
                   theme={this.state.theme}
                   onChange={this.input}
                 />
